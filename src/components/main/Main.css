@@ -76,7 +76,7 @@
   background-color: #dfe4ea;
 }
 
-.main .bottom {
+.main .main-bottom {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -121,4 +121,32 @@
   font-size: 14px;
   margin: 15px;
   font-weight: 300;
+}
+
+.result {
+  padding: 0px 5%;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.result::-webkit-scrollbar {
+  display: none;
+}
+
+.result-title {
+  margin: 40px 0px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.result img {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.result-data {
+  display: flex;
+  align-items: start;
+  gap: 20px;
 }
