@@ -14,20 +14,58 @@ const ContextProvider = (props) => {
     const [loading, setLoading] = useState(false);
     const [resultData, setResultData] = useState("");
 
+    const delayPara = (index, nextWord) => {
+
+        setTimeout(function (params) {
+            setResultData(prev => prev + nextWord);
+        }, 75 * index);
+
+    }
+
 
     const onSent = async (prompt) => {
+
+        let responsePrompt = prompt;
+
+        if (prompt == undefined || prompt == null || prompt == "") {
+            responsePrompt = input;
+        }
+
 
         setResultData("")
         setLoading(true)
         setShowResult(true)
-        setRecentPrompt(input)
-        const response = await runChat(input);
-        setResultData(response);
+        setRecentPrompt(responsePrompt)
+        const response = await runChat(responsePrompt);
+        let responseArray = response.split("**");
+        let newResponse;
+
+        for (let i = 0; i < responseArray.length; i++) {
+            if (i == 0 || i % 2 == 0) {
+                newResponse += responseArray[i];
+            }
+            else {
+                newResponse += "<b>" + responseArray[i] + "</b>";
+
+            }
+
+
+        }
+
+        let newResponse2 = newResponse.split("*").join(<br />);
+        let newResponseArray = newResponse2.split("  ");
+        for (let i = 0; i < newResponseArray.length; i++) {
+            const nextWord = newResponseArray[i];
+            delayPara(i, nextWord + "");
+        }
         setLoading(false)
+        setInput("");
+
+
 
     }
 
-    //onSent("What is react");
+    //onSent();
 
 
     const contextValue = {
