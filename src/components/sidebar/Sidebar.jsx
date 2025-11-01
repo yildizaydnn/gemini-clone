@@ -1,6 +1,8 @@
 import React, { use, useState } from 'react'
 import './Sidebar.css'
 import { assets } from '../../assets/assets'
+import { useContext } from 'react'
+import { Context } from '../../context/Context.jsx'
 
 
 
@@ -8,6 +10,13 @@ import { assets } from '../../assets/assets'
 function Sidebar() {
 
     const [extended, setExtended] = useState(false);
+    const { setRecentPrompt, setShowResult, setResultData, prevPrompts, newChat } = useContext(Context);
+
+    const loadPrompt = (item) => {
+        setRecentPrompt(item.prompt);
+        setShowResult(true);
+        setResultData(item.response)
+    }
 
     return (
         <div className='sidebar'>
@@ -16,7 +25,7 @@ function Sidebar() {
                 <img onClick={() => setExtended(prev => !prev)} className="menu" src={assets.menu_icon} alt="" />
 
                 {/* NEW CHAT butonu */}
-                <div className="new-chat">
+                <div onClick={() => newChat()} className="new-chat">
                     <img src={assets.plus_icon} alt="" />
                     {extended ? <p>New Chat</p> : null}
                 </div>
@@ -25,10 +34,15 @@ function Sidebar() {
                 {extended ?
                     <div className="recent">
                         <p className='recent-title'>Recent Chats</p>
-                        <div className="recent-entry">
-                            <img src={assets.message_icon} alt="" />
-                            <p>What is react ...</p>
-                        </div>
+                        {prevPrompts.map((item, index) => {
+                            return (
+                                <div onClick={() => loadPrompt(item)} className="recent-entry">
+                                    <img src={assets.message_icon} alt="" />
+                                    <p>{item.prompt.slice(0, 20)}...</p>
+                                </div>
+                            )
+                        })}
+
                     </div>
                     : null
                 }
